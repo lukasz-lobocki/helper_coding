@@ -1,0 +1,21 @@
+# gitginore template for creating Snap packages
+
+# ███████ ███    ██  █████  ██████      ██  ██████  ███    ██  ██████  ██████  ███████
+# ██      ████   ██ ██   ██ ██   ██     ██ ██       ████   ██ ██    ██ ██   ██ ██
+# ███████ ██ ██  ██ ███████ ██████      ██ ██   ███ ██ ██  ██ ██    ██ ██████  █████
+#      ██ ██  ██ ██ ██   ██ ██          ██ ██    ██ ██  ██ ██ ██    ██ ██   ██ ██
+# ███████ ██   ████ ██   ██ ██          ██  ██████  ██   ████  ██████  ██   ██ ███████
+
+# Lists Git ignored globs by Snap. Website: https://snapcraft.io/
+
+parts/
+prime/
+stage/
+*.snap
+
+# Snapcraft global state tracking data(automatically generated)
+# https://forum.snapcraft.io/t/location-to-save-global-state/768
+/snap/.snapcraft/
+
+# Source archive packed by `snapcraft cleanbuild` before pushing to the LXD container
+/*_source.tar.bz2

@@ -1,0 +1,280 @@
+# CODING
+
+```bash
+git clone git@github.com:lukasz-lobocki/<...>
+git pull origin main
+git add --update && git commit -m "Update" && git push origin main
+```
+
+<details>
+<summary>Advanced</summary>
+
+```bash
+git clone --recurse-submodules git@github.com:lukasz-lobocki/<...>
+git fetch origin main
+git add --all
+git push --set-upstream origin main
+```
+
+</details>
+
+## Poetry
+
+### Basic versioning
+
+Check [Poetry](https://blog.frank-mich.com/poetry-explanations-and-tips/), or [py-pkgs](https://py-pkgs.org/07-releasing-versioning), or [python-semantic-release](https://python-semantic-release.readthedocs.io/en/latest/configuration.html) pages.
+
+```bash
+git add --update
+git commit -m "fix: change"
+poetry run semantic-release version
+```
+
+:no_entry: **No need to push.**
+
+<details>
+<summary>Arbitrary bump.</summary>
+
+If you need to bump the version to an arbitrary number, add `git tag` with the value _preceding_ the desired one. If you need version `v0.3.2`, use `git tag v0.3.1` and perform _patch_ level `fix:` commit.
+
+```bash
+git tag --annotate v0.3.1 -m "Manual version bump."
+git add --update \
+  && git commit -m "fix: Manual version bump."
+poetry run semantic-release version
+```
+
+</details>
+
+### Placement of virtualenvs
+
+```bash
+poetry config virtualenvs.in-project true
+poetry config virtualenvs.create true
+```
+
+### New in _new_ directory
+
+### Script
+
+Check out this script [file-module_setup-sh](https://gist.github.com/lukasz-lobocki/bd5bfee6a2865269c40714da5bc36411#file-setup_module-sh), alternatively create via PyCharm _NEW_ project.
+
+### Add
+
+```bash
+poetry add --group dev esptool
+poetry add --editable git++ssh://github.com/lukasz-lobocki/lobo_rig.git
+```
+
+### Linking src
+
+```bash
+find .venv/src/*/src/* \
+  -type f \( -iname '*.py' ! -iname '__init__.py' \) \
+  -print0 \
+  | xargs -0I@ ln --relative --symbolic @ sub
+```
+
+### Recreating environment
+
+Do the following in the folder with `pyproject.toml`.
+
+Stop the current virtualenv if active or alternative use `exit` to exit from a Poetry shell session. Remove all the files of the current environment of the folder you are in, then reactivate Poetry shell.
+
+```bash
+deactivate \
+   ; POETRY_LOCATION=`poetry env info -p` \
+  && echo "Poetry is $POETRY_LOCATION" \
+  && rm -rf "$POETRY_LOCATION" \
+  && poetry shell
+```
+
+Install everything.
+
+```bash
+poetry install
+```
+
+## requirements.txt
+
+```bash
+pipreqs --print
+```
+
+## Gita
+
+Check [gita](https://github.com/nosarthur/gita) page.
+
+### Add
+
+All repo(s) in <repo-parent-path(s)> recursively
+
+```bash
+gita add -r <repo-parent-path(s)>
+```
+
+<details>
+<summary>Same as above plus automatically generate hierarchical groups.</summary>
+
+```bash
+gita add -a <repo-parent-path(s)>
+```
+
+</details>
+
+### Remove
+
+All groups and repos
+
+```bash
+gita clear
+```
+
+## Detached head
+
+```bash
+git commit -m "my temp work, head reatachment" && git branch temp
+git checkout main && git merge temp
+```
+
+## Delete remote branch
+
+```bash
+git branch --remotes
+git push origin --delete wip
+git fetch --prune origin
+```
+
+## Switch to ssh
+
+```bash
+git remote --verbose ; git remote rm origin
+git remote add origin \
+  git@github.com:lukasz-lobocki/transmitter_bme_nrf.git
+git remote --verbose
+git fetch origin ; git push --set-upstream origin main
+```
+
+## Purging
+
+Make the current commit the only (initial) commit in a Git repository.
+
+:warning: It is mandatory to **do backup**.
+
+:information_source: Requires `main` branch **not protected**, see this [page](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
+
+```bash
+git checkout --orphan newBranch
+git add --all  # Add all files
+git commit  # and commit them
+git branch --delete --force main  # Delete the main branch
+git branch --move main  # Rename the current branch to main
+git push --force origin main  # Force push main branch to github
+git reflog expire --expire=now --all  # expire reflog to dereference objects
+git gc --aggressive --prune=now  # remove the old files
+```
+
+## Submodules
+
+```bash
+git submodule add git@github.com:lukasz-lobocki/lobo_display_setup.git
+```
+
+## Subtrees
+
+### Add
+
+```bash
+git remote add --force lobo_rig git@github.com:lukasz-lobocki/lobo_rig.git
+git subtree add --prefix git-subtree/lobo_rig lobo_rig main --squash
+```
+
+### Troubleshoot
+
+```bash
+git diff-index HEAD
+```
+
+### List
+
+```bash
+git log | grep git-subtree-dir | tr -d ' ' | cut -d ":" -f2 | sort | uniq
+git log | grep git-subtree-dir | awk '{ print $2 }'
+```
+
+### Document
+
+```bash
+git remote --verbose > .gitremote && git log \
+  | grep git-subtree-dir \
+  | tr -d ' ' | cut -d ":" -f2 \
+  | sort | uniq \
+  | xargs -I {} bash -c 'if [ -d $(git rev-parse --show-toplevel)/{} ] ; then echo {}; fi' \
+  > .gitsubtree
+```
+
+## Recursive mass changes
+
+```bash
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** pulling: '{} && git -C {} pull origin main"
+
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** status: '{} && git -C {} status"
+
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** adding: '{} && git -C {} add ."
+
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** adding --all: '{} && git -C {} add --all"
+
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** commiting: '{} && git -C {} commit -m "mass commit""
+
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** pushing: '{} && git -C {} push -u origin main"
+
+find . -type d -name .git \
+  | sed 's/\/.git//' \
+  | xargs -P1 -I{} bash -c "echo -e '\n\n*** pulling & pushing: '{} && git -C {} pull origin main && git -C {} push -u origin main"
+```
+
+## rshell
+
+To connect.
+
+```bash
+rshell --port /dev/ESP32_S3_pro
+```
+
+To remove a directory.
+
+```bash
+rshell --port /dev/ESP32_S3_pro rm -r /sub
+```
+
+To do.
+
+```bash
+rshell ls /pyboard
+rshell cp -r lobo_rig /pyboard/flash/lib
+rshell rsync . /pyboard/flash/lib
+```
+
+## ampy
+
+To run using poetry's venv.
+
+```bash
+poetry run ampy
+```
+
+```bash
+poetry run ampy --port /dev/ESP32_S3_pro ls
+```

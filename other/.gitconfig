@@ -1,0 +1,23 @@
+[user]
+	name = lukasz-lobocki
+	email = lukasz.lobocki@googlemail.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[core]
+	excludesfile = /home/lukasz/.gitignore
+        excludesfile = /home/lukasz/JetBrains.gitignore
+        excludesfile = /home/lukasz/Snap.gitignore
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
+[advice]
+	statusHints = false
+[commit]
+	template = /home/lukasz/.gitcommitmessage.txt
+[credential]
+	helper = cache
