@@ -2,8 +2,16 @@
 
 ```bash
 git clone git@github.com:lukasz-lobocki/<...>
+```
+
+```bash
 git pull origin main
-git add --update && git commit -m "Update" && git push origin main
+```
+
+```bash
+git add --update \
+  && git commit -m "Update" \
+  && git push origin main
 ```
 
 <details>
@@ -11,8 +19,17 @@ git add --update && git commit -m "Update" && git push origin main
 
 ```bash
 git clone --recurse-submodules git@github.com:lukasz-lobocki/<...>
+```
+
+```bash
 git fetch origin main
+```
+
+```bash
 git add --all
+```
+
+```bash
 git push --set-upstream origin main
 ```
 
@@ -26,7 +43,13 @@ Check [Poetry](https://blog.frank-mich.com/poetry-explanations-and-tips/), or [p
 
 ```bash
 git add --update
+```
+
+```bash
 git commit -m "fix: change"
+```
+
+```bash
 poetry run semantic-release version
 ```
 
@@ -39,8 +62,14 @@ If you need to bump the version to an arbitrary number, add `git tag` with the v
 
 ```bash
 git tag --annotate v0.3.1 -m "Manual version bump."
+```
+
+```bash
 git add --update \
   && git commit -m "fix: Manual version bump."
+```
+
+```bash
 poetry run semantic-release version
 ```
 
@@ -50,6 +79,9 @@ poetry run semantic-release version
 
 ```bash
 poetry config virtualenvs.in-project true
+```
+
+```bash
 poetry config virtualenvs.create true
 ```
 
@@ -63,6 +95,9 @@ Check out this script [file-module_setup-sh](https://gist.github.com/lukasz-lobo
 
 ```bash
 poetry add --group dev esptool
+```
+
+```bash
 poetry add --editable git++ssh://github.com/lukasz-lobocki/lobo_rig.git
 ```
 
@@ -134,6 +169,9 @@ gita clear
 
 ```bash
 git commit -m "my temp work, head reatachment" && git branch temp
+```
+
+```bash
 git checkout main && git merge temp
 ```
 
@@ -141,7 +179,13 @@ git checkout main && git merge temp
 
 ```bash
 git branch --remotes
+```
+
+```bash
 git push origin --delete wip
+```
+
+```bash
 git fetch --prune origin
 ```
 
@@ -149,9 +193,18 @@ git fetch --prune origin
 
 ```bash
 git remote --verbose ; git remote rm origin
+```
+
+```bash
 git remote add origin \
   git@github.com:lukasz-lobocki/transmitter_bme_nrf.git
+```
+
+```bash
 git remote --verbose
+```
+
+```bash
 git fetch origin ; git push --set-upstream origin main
 ```
 
@@ -164,15 +217,27 @@ Make the current commit the only (initial) commit in a Git repository.
 :information_source: Requires `main` branch **not protected**, see this [page](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
 
 ```bash
-git checkout --orphan newBranch
-git add --all  # Add all files
-git commit  # and commit them
-git branch --delete --force main  # Delete the main branch
-git branch --move main  # Rename the current branch to main
-git push --force origin main  # Force push main branch to github
+git checkout --orphan newBranch \
+  && git add --all
+  && git commit
+```
+
+```bash
+git branch --delete --force main \
+  && git branch --move main \
+  && git push --force origin main
+```
+
+```bash
 git reflog expire --expire=now --all  # expire reflog to dereference objects
+```
+
+```bash
 git gc --aggressive --prune=now  # remove the old files
 ```
+
+<details>
+<summary>Subs.</summary>
 
 ## Submodules
 
@@ -213,37 +278,7 @@ git remote --verbose > .gitremote && git log \
   > .gitsubtree
 ```
 
-## Recursive mass changes
-
-```bash
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** pulling: '{} && git -C {} pull origin main"
-
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** status: '{} && git -C {} status"
-
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** adding: '{} && git -C {} add ."
-
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** adding --all: '{} && git -C {} add --all"
-
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** commiting: '{} && git -C {} commit -m "mass commit""
-
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** pushing: '{} && git -C {} push -u origin main"
-
-find . -type d -name .git \
-  | sed 's/\/.git//' \
-  | xargs -P1 -I{} bash -c "echo -e '\n\n*** pulling & pushing: '{} && git -C {} pull origin main && git -C {} push -u origin main"
-```
+</details>
 
 ## rshell
 
@@ -259,11 +294,17 @@ To remove a directory.
 rshell --port /dev/ESP32_S3_pro rm -r /sub
 ```
 
-To do.
+To do the do.
 
 ```bash
 rshell ls /pyboard
+```
+
+```bash
 rshell cp -r lobo_rig /pyboard/flash/lib
+```
+
+```bash
 rshell rsync . /pyboard/flash/lib
 ```
 

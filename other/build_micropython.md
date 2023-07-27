@@ -17,6 +17,9 @@ Usually already installed, maybe with the exceptionf for `cmake`.
 
 ```bash
 git clone -b v5.0.2 git@github.com:espressif/esp-idf.git
+```
+
+```bash
 cd esp-idf
 ```
 
@@ -24,15 +27,24 @@ Check [here](https://github.com/micropython/micropython/tree/master/ports/esp32)
 
 ```bash
 ./install.sh
+```
+
+```bash
 source export.sh
 ```
 
 ## Clone micropython source
 
 ```bash
-git clone git@github.com:lukasz-lobocki/micropython.git
-cd micropython
+git clone git@github.com:lukasz-lobocki/micropython.git \
+  && cd micropython
+```
+
+```bash
 git remote add upstream git@github.com:micropython/micropython.git
+```
+
+```bash
 git checkout -b dev-branch
 ```
 
@@ -104,6 +116,9 @@ makes **all-in-one**.
 
 ```bash
 cd micropython
+```
+
+```bash
 pushd ../espressif/esp-idf \
   && source export.sh \
   && popd \
@@ -114,6 +129,9 @@ Cleaning.
 
 ```bash
 cd micropython
+```
+
+```bash
 pushd ../espressif/esp-idf \
   && source export.sh \
   && popd \
@@ -162,7 +180,13 @@ esptool --chip esp32s3 --port /dev/ttyACM0 --after no_reset \
 
 ```bash
 esptool --chip esp32s3 --port /dev/ttyACM0 write_flash 0x0 bootloader.bin
+```
+
+```bash
 esptool --chip esp32s3 --port /dev/ttyACM0 write_flash 0x10000 micropython.bin
+```
+
+```bash
 esptool --chip esp32s3 --port /dev/ttyACM0 write_flash 0x8000 partition-table.bin
 ```
 
