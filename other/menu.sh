@@ -29,13 +29,15 @@ fi
 case $REPLY in
   "git-add commit-fix POETRY")
     git add -u
-    git commit -m "fix: change"
+    MESSAGE=$(whiptail --inputbox "What is your commit message?" 8 39 "fix: Updating." --title "Commit message" --nocancel\
+      3>&1 1>&2 2>&3)
+    git commit -m "${MESSAGE}"
     poetry run semantic-release version
     git fetch
     ;;
   "git-add commit-chore PUSH")
     git add -u
-    MESSAGE=$(whiptail --inputbox "What is your commit message?" 8 39 "chore: update" --title "Commit message" --nocancel\
+    MESSAGE=$(whiptail --inputbox "What is your commit message?" 8 39 "chore: Updating." --title "Commit message" --nocancel\
       3>&1 1>&2 2>&3)
     git commit -m "${MESSAGE}"
     git push
