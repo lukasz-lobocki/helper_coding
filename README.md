@@ -129,7 +129,51 @@ deactivate \
 Install everything.
 
 ```bash
-poetry install
+poetry install --no-interaction
+```
+
+## PyPI
+
+### Upload to test-pypi
+
+```bash
+poetry build
+```
+
+Adding uploader.
+
+```bash
+poetry add --group dev twine
+```
+
+Actual upload.
+
+```bash
+poetry run twine upload --repository testpypi dist/*
+```
+
+### Download from PyPI and test-pypi
+
+Primary source dedinition.
+
+```bash
+poetry source add --priority=primary PyPI
+```
+
+Supplemental source definition.
+
+```bash
+poetry source add --priority=supplemental test https://test.pypi.org/simple/
+```
+
+And then, add module same as other's modules.
+
+```bash
+poetry add <module-name>
+```
+
+```bash
+poetry update
 ```
 
 ## Gita
