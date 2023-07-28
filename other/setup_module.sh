@@ -86,12 +86,15 @@ git push --set-upstream origin main
 git tag --annotate v$(grep -o '^version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}') \
   -m "Manual version bump."
 
-#
 echo -e "
 ${RED}>>> ${NC}Releasing first ${GREEN}feat${NC} version.
 "
 poetry run semantic-release version
-git pull
+
+echo -e "
+${RED}>>> ${NC}Repo syncing.
+"
+gh repo sync
 
 echo -e "
 ${RED}>>> ${NC}Top entry should read ${BOLD}HEAD -> main, tag: v$(grep -o 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}'), origin/main${NOBOLD}

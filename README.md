@@ -134,6 +134,8 @@ poetry install --no-interaction
 
 ## PyPI
 
+Check [this](https://packaging.python.org/en/latest/tutorials/packaging-projects/) page.
+
 ### Preparation
 
 Build _sdist_ and _wheel_.
