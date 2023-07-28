@@ -13,6 +13,7 @@ if [[ $GITSTATUS == "0" ]]; then  # repo exists
   REPLY=$(whiptail --title "Git" --menu "Choose an option" 15 78 6 --notags \
     "info" "info" \
     "git-add commit-fix POETRY" "git-add commit-fix POETRY" \
+    "git-add commit-fix" "git-add commit-fix" \
     "git-add commit-chore PUSH" "git-add commit-chore PUSH" \
   3>&1 1>&2 2>&3)
 else  # no repo
@@ -35,6 +36,12 @@ case $REPLY in
     poetry run semantic-release version
     git fetch
     ;;
+  "git-add commit-fix")
+    git add -u
+    MESSAGE=$(whiptail --inputbox "What is your commit message?" 8 39 "fix: Updating." --title "Commit message" --nocancel\
+      3>&1 1>&2 2>&3)
+    git commit -m "${MESSAGE}"
+    ;;
   "git-add commit-chore PUSH")
     git add -u
     MESSAGE=$(whiptail --inputbox "What is your commit message?" 8 39 "chore: Updating." --title "Commit message" --nocancel\
@@ -49,7 +56,7 @@ case $REPLY in
   "setup module")
     MESSAGE=$(whiptail --inputbox "What is your module name?" 8 39 --title "Module name" --nocancel\
       3>&1 1>&2 2>&3)
-    ~/Code/helper/coding/other/setup_module.sh NAME
+    ~/Code/helper/coding/other/setup_module.sh "${MESSAGE}"
     ;;
 esac
 
