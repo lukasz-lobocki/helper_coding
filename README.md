@@ -84,14 +84,14 @@ poetry config virtualenvs.in-project true
 ```bash
 poetry config virtualenvs.create true
 ```
+<details>
+<summary>New in new directory</summary>
 
-### New in _new_ directory
-
-### Script
+#### Script
 
 Check out this script [file-module_setup-sh](https://gist.github.com/lukasz-lobocki/bd5bfee6a2865269c40714da5bc36411#file-setup_module-sh), alternatively create via PyCharm _NEW_ project.
 
-### Add
+#### Add
 
 ```bash
 poetry add --group dev esptool
@@ -101,7 +101,7 @@ poetry add --group dev esptool
 poetry add --editable git++ssh://github.com/lukasz-lobocki/lobo_rig.git
 ```
 
-### Linking src
+#### Linking src
 
 ```bash
 find .venv/src/*/src/* \
@@ -109,6 +109,8 @@ find .venv/src/*/src/* \
   -print0 \
   | xargs -0I@ ln --relative --symbolic @ sub
 ```
+
+</details>
 
 ### Recreating environment
 
@@ -128,12 +130,6 @@ Install everything.
 
 ```bash
 poetry install
-```
-
-## requirements.txt
-
-```bash
-pipreqs --print
 ```
 
 ## Gita
@@ -276,6 +272,12 @@ git remote --verbose > .gitremote && git log \
   | sort | uniq \
   | xargs -I {} bash -c 'if [ -d $(git rev-parse --show-toplevel)/{} ] ; then echo {}; fi' \
   > .gitsubtree
+```
+
+## requirements.txt
+
+```bash
+pipreqs --print
 ```
 
 </details>
