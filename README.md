@@ -134,7 +134,7 @@ poetry install --no-interaction
 
 ## PyPI
 
-### Upload to test-pypi
+### Upload to testPyPI
 
 ```bash
 poetry build
@@ -152,7 +152,7 @@ Actual upload.
 poetry run twine upload --repository testpypi dist/*
 ```
 
-### Download from PyPI and test-pypi
+### Download from PyPI and testPyPI
 
 Primary source dedinition.
 
@@ -163,7 +163,7 @@ poetry source add --priority=primary PyPI
 Supplemental source definition.
 
 ```bash
-poetry source add --priority=supplemental test https://test.pypi.org/simple/
+poetry source add --priority=supplemental testpypi https://test.pypi.org/simple/
 ```
 
 And then, add module same as other's modules.
