@@ -52,6 +52,10 @@ ${RED}>>> ${NC}Adding semantic release versionining."
 poetry add --lock --group dev python-semantic-release@latest
 
 echo -e "
+${RED}>>> ${NC}Adding PyPI publishing."
+poetry add --lock --group dev twine@latest
+
+echo -e "
 ${RED}>>> ${NC}Adding microcontroller communication suite."
 # poetry add --quiet --lock --group dev esptool@latest  # used only for micropython flashin, other modules do not need it.
 poetry add --lock --group dev adafruit-ampy@latest

@@ -134,22 +134,30 @@ poetry install --no-interaction
 
 ## PyPI
 
-### Upload to testPyPI
+### Preparation
+
+Build _sdist_ and _wheel_.
 
 ```bash
 poetry build
 ```
 
-Adding uploader.
+Adding uploader, needed **only** if you do not have one already.
 
 ```bash
 poetry add --group dev twine
 ```
 
-Actual upload.
+### Upload to testPyPI
 
 ```bash
 poetry run twine upload --repository testpypi dist/*
+```
+
+### Upload to PyPI - the *production*
+
+```bash
+poetry run twine upload dist/*
 ```
 
 ### Download from PyPI and testPyPI
@@ -166,7 +174,7 @@ Supplemental source definition.
 poetry source add --priority=supplemental testpypi https://test.pypi.org/simple/
 ```
 
-And then, add module same as other's modules.
+And then, add module the same way as other's modules.
 
 ```bash
 poetry add <module-name>
