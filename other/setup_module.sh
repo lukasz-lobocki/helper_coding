@@ -59,7 +59,7 @@ poetry add --lock --group dev adafruit-ampy@latest
 echo -e "
 ${RED}>>> ${NC}Installing all.
 "
-poetry install
+poetry install --no-interaction
 
 echo -e "
 ${RED}>>> ${NC}Adding and commiting ${GREEN}feat:${NC} all.
