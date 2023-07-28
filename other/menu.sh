@@ -37,7 +37,7 @@ case $REPLY in
     git add -u
     MESSAGE=$(whiptail --inputbox "What is your commit message?" 8 39 "chore: update" --title "Commit message" --nocancel\
       3>&1 1>&2 2>&3)
-    git commit -m "chore: update"
+    git commit -m "${MESSAGE}"
     git push
     ;;
   "info")
