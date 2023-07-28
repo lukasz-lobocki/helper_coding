@@ -47,6 +47,8 @@ case $REPLY in
     git remote show origin
     ;;
   "setup module")
+    MESSAGE=$(whiptail --inputbox "What is your module name?" 8 39 --title "Module name" --nocancel\
+      3>&1 1>&2 2>&3)
     ~/Code/helper/coding/other/setup_module.sh NAME
     ;;
 esac
