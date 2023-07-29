@@ -94,7 +94,7 @@ poetry run semantic-release version
 echo -e "
 ${RED}>>> ${NC}Repo pushing.
 "
-gh repo push
+git push
 
 echo -e "
 ${RED}>>> ${NC}Top entry should read ${BOLD}HEAD -> main, tag: v$(grep -o 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}'), origin/main${NOBOLD}

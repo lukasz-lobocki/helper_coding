@@ -11,12 +11,12 @@ GITSTATUS=$?
 
 if [[ $GITSTATUS == "0" ]]; then  # repo exists
   REPLY=$(whiptail --title "Git" --menu "Choose option then press Ok" 15 78 6 --notags \
-    "info" "info" \
-    "git-add-update commit push" "git-add-update commit [push]" \
+    "info" " info " \
+    "git-add-update commit push" " git-add-update commit [push] " \
   3>&1 1>&2 2>&3)
 else  # no repo
   REPLY=$(whiptail --title "Git" --menu "Choose an option then press Ok" 15 78 6 --notags \
-    "setup module" "setup module" \
+    "setup module" " setup module " \
   3>&1 1>&2 2>&3)
 fi
 
@@ -63,15 +63,15 @@ case $REPLY in
     if [[ $POETRYSTATUS == "0" ]]; then  # repo is poetry managed
       OUTPUT=$(whiptail --title "Action" --menu --notags \
         "Choose action then press Ok" 20 78 3 \
-        "nop" "Just commit" \
-        "poetry" "Commit and poetry run semantic-release version " \
-        "push" "Commit git push" \
+        "nop" " Just commit " \
+        "poetry" " Commit and poetry run semantic-release version " \
+        "push" " Commit git push " \
       3>&1 1>&2 2>&3)
     else  # repo not poetry managed
       OUTPUT=$(whiptail --title "Action" --menu --notags \
         "Choose action then press Ok" 20 78 3 \
-        "nop" "Just commit" \
-        "push" "Commit git push " \
+        "nop" " Just commit " \
+        "push" " Commit git push " \
       3>&1 1>&2 2>&3)
     fi
 
@@ -85,7 +85,7 @@ case $REPLY in
         ;;
       "poetry")
         poetry run semantic-release version
-        gh repo push
+        git push
         ;;
       "push")
         git push
