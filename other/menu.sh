@@ -13,7 +13,7 @@ GITSTATUS=$?
 if [[ $GITSTATUS == "0" ]]; then  # repo exists
   REPLY=$(whiptail --title "Git" --menu "Choose option then press Ok" 15 78 6 --notags \
     "info" " info " \
-    "git-add-update commit push" " git-add-update commit [push] " \
+    "git:add-update commit push" " git:add-update commit [push] " \
   3>&1 1>&2 2>&3)
 else  # no repo
   REPLY=$(whiptail --title "Git" --menu "Choose an option then press Ok" 15 78 6 --notags \
@@ -27,7 +27,7 @@ if [ $MENUSTATUS != 0 ]; then
 fi
 
 case $REPLY in
-  "git-add-update commit push")
+  "git:add-update commit push")
     git add -u
     TYPE=$(whiptail --title "Commit message type" --menu \
       "Choose commit type then press Ok" 20 78 8 \
@@ -47,7 +47,7 @@ case $REPLY in
       exit 1
     fi
 
-    OUTPUT=$(whiptail --inputbox "What is your commit message?" 8 39 "${TYPE}: Updating." --title "Commit message"\
+    OUTPUT=$(whiptail --inputbox "What is your commit message?" 8 39 "${TYPE}: msg." --title "Commit message"\
       3>&1 1>&2 2>&3)
 
     MENUSTATUS=$?
@@ -65,14 +65,14 @@ case $REPLY in
       OUTPUT=$(whiptail --title "Action" --menu --notags \
         "Choose action then press Ok" 20 78 3 \
         "nop" " Just commit " \
-        "poetry" " Commit and poetry run semantic-release version " \
-        "push" " Commit git push " \
+        "poetry" " git:commit poetry:run semantic-release version " \
+        "push" " git:commit push " \
       3>&1 1>&2 2>&3)
     else  # repo not poetry managed
       OUTPUT=$(whiptail --title "Action" --menu --notags \
         "Choose action then press Ok" 20 78 3 \
         "nop" " Just commit " \
-        "push" " Commit git push " \
+        "push" " git:commit push " \
       3>&1 1>&2 2>&3)
     fi
 
