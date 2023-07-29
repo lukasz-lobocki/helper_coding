@@ -4,6 +4,7 @@ set -uo pipefail
 IFS=$'\n\t'
 
 GREEN='\033[0;32m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 git rev-parse --is-inside-work-tree > /dev/null 2>&1
@@ -110,8 +111,15 @@ case $REPLY in
 esac
 
 if [[ $GITSTATUS == "0" ]]; then  # repo exists
+  echo -e "
+${RED}>>> ${NC}Getting git status.
+  "
   git status -sb
-  echo -e "option ${GREEN}${REPLY}${NC} completed on ${GREEN}$(git config --get remote.origin.url)${NC}"
+  echo -e "
+option ${GREEN}${REPLY}${NC} completed on ${GREEN}$(git config --get remote.origin.url)${NC}
+  "
 else
-  echo -e "option ${GREEN}${REPLY}${NC} completed"
+  echo -e "
+option ${GREEN}${REPLY}${NC} completed
+  "
 fi
