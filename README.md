@@ -91,7 +91,7 @@ poetry config virtualenvs.create true
 
 #### Script
 
-Check out this script [file-module_setup-sh](https://gist.github.com/lukasz-lobocki/bd5bfee6a2865269c40714da5bc36411#file-setup_module-sh), alternatively create via PyCharm _NEW_ project.
+Check out this script [file-module_setup-sh](https://github.com/lukasz-lobocki/helper_coding/blob/main/other/setup_module.sh), alternatively create via PyCharm _NEW_ project.
 
 #### Add
 
