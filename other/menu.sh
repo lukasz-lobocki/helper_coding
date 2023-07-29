@@ -56,7 +56,7 @@ case $REPLY in
 
     git commit -m "${OUTPUT}" > /dev/null 2>&1
 
-    poetry env list > /dev/null 2>&1
+    poetry check > /dev/null 2>&1
 
     POETRYSTATUS=$?
 
