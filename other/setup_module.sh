@@ -92,9 +92,9 @@ ${RED}>>> ${NC}Releasing first ${GREEN}feat${NC} version.
 poetry run semantic-release version
 
 echo -e "
-${RED}>>> ${NC}Repo syncing.
+${RED}>>> ${NC}Repo pushing.
 "
-gh repo sync
+gh repo push
 
 echo -e "
 ${RED}>>> ${NC}Top entry should read ${BOLD}HEAD -> main, tag: v$(grep -o 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}'), origin/main${NOBOLD}
@@ -133,7 +133,7 @@ ${RED}>>> ${NC}Typical workflow.
 
 git ${BOLD}add${NOBOLD} --update ${RED}&&${NC} git ${BOLD}commit${NOBOLD} -m \"${GREEN}fix: change${NC}\"
 poetry ${BOLD}run${NOBOLD} semantic-release ${GREEN}version${NC}
-${BOLD}# no need for git push${NOBOLD}"
+git ${BOLD}push${NOBOLD}"
 
 # Just emitting message.
 echo -e "

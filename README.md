@@ -53,7 +53,9 @@ git commit -m "fix: change"
 poetry run semantic-release version
 ```
 
-:no_entry: **No need to push.**
+```bash
+git push
+```
 
 <details>
 <summary>Arbitrary bump.</summary>

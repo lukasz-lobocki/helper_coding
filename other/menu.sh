@@ -6,7 +6,7 @@ IFS=$'\n\t'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
-git rev-parse --is-inside-work-tree > /dev/null 2>&1 #  || { echo "no repo" ; exit 1; }
+git rev-parse --is-inside-work-tree > /dev/null 2>&1
 GITSTATUS=$?
 
 if [[ $GITSTATUS == "0" ]]; then  # repo exists
@@ -28,17 +28,17 @@ fi
 case $REPLY in
   "git-add-update commit push")
     git add -u
-    TYPE=$(whiptail --title "Commit message type" --radiolist \
+    TYPE=$(whiptail --title "Commit message type" --menu \
       "Choose commit type then press Ok" 20 78 8 \
-      "chore" "Changes to the auxiliary tools and libraries" ON \
-      "fix" "A bug fix" OFF \
-      "feat" "A new feature" OFF \
-      "build" "Changes to the build process" OFF \
-      "docs" "Documentation only changes" OFF \
-      "perf" "A code change that improves performance" OFF \
-      "style" "Changes formatting that do not affect the meaning" OFF \
-      "refactor" "A code change that is not a bug fix nor a feature " OFF \
-      "test" "Adding missing or correcting existing tests" OFF \
+      "chore" "Changes to the auxiliary tools and libraries" \
+      "fix" "A bug fix" \
+      "feat" "A new feature" \
+      "build" "Changes to the build process" \
+      "docs" "Documentation only changes" \
+      "perf" "A code change that improves performance" \
+      "style" "Changes formatting that do not affect the meaning" \
+      "refactor" "A code change that is not a bug fix nor a feature " \
+      "test" "Adding missing or correcting existing tests" \
     3>&1 1>&2 2>&3)
 
     MENUSTATUS=$?
@@ -54,13 +54,26 @@ case $REPLY in
       exit 1
     fi
 
-    git commit -m "${OUTPUT}"
+    git commit -m "${OUTPUT}" > /dev/null 2>&1
 
-    OUTPUT=$(whiptail --title "Action" --radiolist \
-      "Choose action then press Ok" 20 78 3 \
-      "nop" "Just commit" ON \
-      "poetry" "Commit and poetry run semantic-release version " OFF \
-      "push" "Commit git push" OFF 3>&1 1>&2 2>&3)
+    poetry env list > /dev/null 2>&1
+
+    POETRYSTATUS=$?
+
+    if [[ $POETRYSTATUS == "0" ]]; then  # repo is poetry managed
+      OUTPUT=$(whiptail --title "Action" --menu --notags \
+        "Choose action then press Ok" 20 78 3 \
+        "nop" "Just commit" \
+        "poetry" "Commit and poetry run semantic-release version " \
+        "push" "Commit git push" \
+      3>&1 1>&2 2>&3)
+    else  # repo not poetry managed
+      OUTPUT=$(whiptail --title "Action" --menu --notags \
+        "Choose action then press Ok" 20 78 3 \
+        "nop" "Just commit" \
+        "push" "Commit git push " \
+      3>&1 1>&2 2>&3)
+    fi
 
     MENUSTATUS=$?
     if [ $MENUSTATUS != 0 ]; then
@@ -72,7 +85,7 @@ case $REPLY in
         ;;
       "poetry")
         poetry run semantic-release version
-        gh repo sync
+        gh repo push
         ;;
       "push")
         git push
