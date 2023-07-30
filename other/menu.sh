@@ -50,8 +50,6 @@ case $REPLY in
       exit 1
     fi
 
-    echo -e "\n${RED}>>> ${NC}${GREEN}${TYPE}${NC} chosen.\n"
-
     OUTPUT=$(whiptail --inputbox "What is your commit message?" 8 39 "${TYPE}: msg." --title "Commit message"\
       3>&1 1>&2 2>&3)
 
