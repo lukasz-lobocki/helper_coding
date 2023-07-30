@@ -26,8 +26,11 @@ if [ $MENUSTATUS != 0 ]; then
   exit 1
 fi
 
+echo -e "\n${RED}>>> ${NC}${GREEN}${REPLY}${NC} chosen.\n"
+
 case $REPLY in
   "git:add-update commit push")
+    echo -e "\n${RED}>>> ${NC}Git add update.\n"
     git add -u
     TYPE=$(whiptail --title "Commit message type" --menu \
       "Choose commit type then press Ok" 20 78 8 \
@@ -47,6 +50,8 @@ case $REPLY in
       exit 1
     fi
 
+    echo -e "\n${RED}>>> ${NC}${GREEN}${TYPE}${NC} chosen.\n"
+
     OUTPUT=$(whiptail --inputbox "What is your commit message?" 8 39 "${TYPE}: msg." --title "Commit message"\
       3>&1 1>&2 2>&3)
 
@@ -55,7 +60,10 @@ case $REPLY in
       exit 1
     fi
 
-    git commit -m "${OUTPUT}" > /dev/null 2>&1
+    echo -e "\n${RED}>>> ${NC}${GREEN}${OUTPUT}${NC} chosen.\n"
+
+    echo -e "\n${RED}>>> ${NC}Commiting.\n"
+    git commit -m "${OUTPUT}"
 
     poetry check > /dev/null 2>&1
 
@@ -81,20 +89,27 @@ case $REPLY in
       exit 1
     fi
 
+    echo -e "\n${RED}>>> ${NC}${GREEN}${OUTPUT}${NC} chosen.\n"
+
     case $OUTPUT in
       "nop")
         ;;
       "poetry")
+        echo -e "\n${RED}>>> ${NC}Running poetry.\n"
         poetry run semantic-release version
+        echo -e "\n${RED}>>> ${NC}Git pushing.\n"
         git push
         ;;
       "push")
+        echo -e "\n${RED}>>> ${NC}Git pushing.\n"
         git push
         ;;
     esac
     ;;
   "info")
+    echo -e "\n${RED}>>> ${NC}Git log top entry.\n"
     git log -n 1 --graph --decorate --oneline
+    echo -e "\n${RED}>>> ${NC}Git remote show.\n"
     git remote show origin
     ;;
   "setup module")
@@ -106,20 +121,15 @@ case $REPLY in
       exit 1
     fi
 
+    echo -e "\n${RED}>>> ${NC}Run setup_module.\n"
     ~/Code/helper/coding/other/setup_module.sh "${OUTPUT}"
     ;;
 esac
 
 if [[ $GITSTATUS == "0" ]]; then  # repo exists
-  echo -e "
-${RED}>>> ${NC}Getting git status.
-  "
+  echo -e "\n${RED}>>> ${NC}Git status.\n"
   git status -sb
-  echo -e "
-option ${GREEN}${REPLY}${NC} completed on ${GREEN}$(git config --get remote.origin.url)${NC}
-  "
+  echo -e "\n${RED}>>> ${NC}Option ${GREEN}${REPLY}${NC} completed on ${GREEN}$(git config --get remote.origin.url)${NC}\n"
 else
-  echo -e "
-option ${GREEN}${REPLY}${NC} completed
-  "
+  echo -e "\n${RED}>>> ${NC}Option ${GREEN}${REPLY}${NC} completed\n"
 fi
