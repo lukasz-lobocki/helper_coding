@@ -217,6 +217,18 @@ All groups and repos
 gita clear
 ```
 
+### List repos by last commit date
+
+```bash
+gita shell \
+  "{ git log --pretty=format:'@ %ct @ %ci @ ' --date-order -n 1; \
+    git rev-parse --show-toplevel; };" \
+  | grep --invert-match '^$' \
+  | sort --ignore-leading-blanks --field-separator='@' \
+    --key=2 --reverse \
+  | cut --delimiter='@' --fields=2 --complement
+```
+
 ## Detached head
 
 ```bash
