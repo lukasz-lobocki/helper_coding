@@ -73,6 +73,9 @@ echo -e "
 ${RED}>>> ${NC}Adding and commiting ${GREEN}feat:${NC} all.
 "
 git add --all
+git branch --move --force main
+git tag --annotate v$(grep -o '^version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}') \
+  -m "Manual version bump."
 git commit -m "feat: Repo initiation."
 
 echo -e "
@@ -80,11 +83,8 @@ ${RED}>>> ${NC}Creating remote on GitHub.
 "
 gh repo create "${NAME}" --private --disable-issues --disable-wiki \
   --description "$(grep "^description =" pyproject.toml | awk -F'"' '{print $2}')"
-git branch --move --force main
 git remote add origin git@github.com:lukasz-lobocki/"${NAME}"
 git push --set-upstream origin main
-git tag --annotate v$(grep -o '^version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}') \
-  -m "Manual version bump."
 
 echo -e "
 ${RED}>>> ${NC}Releasing first ${GREEN}feat${NC} version.
