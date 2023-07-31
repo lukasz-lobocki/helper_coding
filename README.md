@@ -226,7 +226,8 @@ gita shell \
   | grep --invert-match '^$' \
   | sort --ignore-leading-blanks --field-separator='@' \
     --key=2 --reverse \
-  | cut --delimiter='@' --fields=2 --complement
+  | cut --delimiter='@' --fields=2 --complement \
+  | column --table --separator '@' --output-separator ' '
 ```
 
 ## Detached head
