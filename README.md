@@ -219,15 +219,33 @@ gita clear
 
 ### List repos by last commit date
 
+With working tree.
+
 ```bash
 gita shell \
-  "{ git log --pretty=format:'@ %ct @ %ci @ ' --date-order -n 1; \
+  "{ git log --pretty=format:'@%ct@%ci@' --date-order -n 1; \
     git rev-parse --show-toplevel; };" \
   | grep --invert-match '^$' \
   | sort --ignore-leading-blanks --field-separator='@' \
     --key=2 --reverse \
   | cut --delimiter='@' --fields=2 --complement \
-  | column --table --separator '@' --output-separator ' '
+  | column --table --separator '@' --output-separator '  ' \
+    --table-columns 'Repo,Last commit,Working tree'
+```
+
+With Github link.
+
+```bash
+gita shell \
+  "{ git log --pretty=format:'@%ct@%ci@' --date-order -n 1; \
+    git config --get remote.origin.url \
+      | sed 's/^git@github.com:/https:\/\/github.com\//'; };" \
+  | grep --invert-match '^$' \
+  | sort --ignore-leading-blanks --field-separator='@' \
+    --key=2 --reverse \
+  | cut --delimiter='@' --fields=2 --complement \
+  | column --table --separator '@' --output-separator '  ' \
+    --table-columns 'Repo,Last commit,Github'
 ```
 
 ## Detached head
