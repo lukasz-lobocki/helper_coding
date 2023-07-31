@@ -50,7 +50,7 @@ case $REPLY in
       exit 1
     fi
 
-    OUTPUT=$(whiptail --inputbox "What is your commit message?" 8 39 "${TYPE}: msg." --title "Commit message"\
+    OUTPUT=$(whiptail --inputbox "What is your commit message?" 8 39 "${TYPE}: Amend." --title "Commit message"\
       3>&1 1>&2 2>&3)
 
     MENUSTATUS=$?
