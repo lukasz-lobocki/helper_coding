@@ -82,9 +82,10 @@ gh repo create "${NAME}" --private --disable-issues --disable-wiki \
   --description "$(grep "^description =" pyproject.toml | awk -F'"' '{print $2}')"
 git branch --move --force main
 git remote add origin git@github.com:lukasz-lobocki/"${NAME}"
-git push --set-upstream origin main
 git tag --annotate v$(grep -o '^version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}') \
   -m "Manual version bump."
+git push --set-upstream --tags origin main
+
 
 echo -e "
 ${RED}>>> ${NC}Releasing first ${GREEN}feat${NC} version.
