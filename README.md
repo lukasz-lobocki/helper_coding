@@ -246,7 +246,7 @@ gita shell \
     git log --pretty=format:'^%ct^%ci^' --date-order -n 1; \
     git config --get remote.origin.url \
       | tr -d '\n' \
-      | sed 's/^git@github.com:/ssh+https:\/\/github.com\//'; \
+      | sed 's/^git@github.com:/ssh@https:\/\/github.com\//'; \
     git branch -v \
       | grep -o '\[[^]]*\]' \
       | sed 's/^/\^/'; \
