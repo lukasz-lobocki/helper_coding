@@ -88,7 +88,7 @@ get_module_name(){
 
 show_git_info(){
   echo -e "\n${RED}>>> ${NC}Git log top entry.\n"
-  git log -n 1 --oneline
+  git log -n 1 --decorate --oneline
   echo -e "\n${RED}>>> ${NC}Git remote show.\n"
   git remote show origin
   return $?
