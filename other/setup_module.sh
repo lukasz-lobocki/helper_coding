@@ -100,7 +100,7 @@ git push
 echo -e "
 ${RED}>>> ${NC}Top entry should read ${BOLD}HEAD -> main, tag: v$(grep -o 'version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml | awk -F'"' '{print $2}'), origin/main${NOBOLD}
 "
-{ git log -n 1 --graph --decorate --oneline \
+{ git log -n 1 --oneline \
   | grep --color "HEAD -> main, tag: v$(grep -o '^version = "[0-9]\+\.[0-9]\+\.[0-9]\+"' pyproject.toml \
   | awk -F'"' '{print $2}'), origin/main"; } \
   || echo -e "
