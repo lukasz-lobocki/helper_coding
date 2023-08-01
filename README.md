@@ -122,7 +122,7 @@ Stop the current virtualenv, if active. Alternatively use `exit` to exit from a 
 
 ```bash
 deactivate \
-   ; POETRY_LOCATION=`poetry env info -p` \
+   ; POETRY_LOCATION=$(poetry env info -p) \
   && echo "Poetry is $POETRY_LOCATION" \
   && rm -rf "$POETRY_LOCATION" \
   && poetry shell
