@@ -33,6 +33,12 @@ git add --all
 git push --set-upstream origin main
 ```
 
+Delete all spaces at end of the line of text. See [here](https://linuxhint.com/50_sed_command_examples/#s14).
+
+```bash
+sed 's/[[:blank:]]*$//' <file>
+```
+
 </details>
 
 ## Poetry
