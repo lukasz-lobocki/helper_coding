@@ -129,7 +129,7 @@ HTTPSURL="https://github.com/${URL#*:}"
 
 if [[ $GITSTATUS == "0" ]]; then  # repo exists
   echo -e "\n${RED}>>> ${NC}Git status.\n"
-  git status -sb
+  git status --short --branch
   echo -e "\n${RED}>>> ${NC}Option ${GREEN}${REPLY}${NC} completed on ${GREEN}${HTTPSURL}${NC}\n"
 else
   echo -e "\n${RED}>>> ${NC}Option ${GREEN}${REPLY}${NC} completed\n"
