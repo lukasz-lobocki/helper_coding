@@ -335,6 +335,8 @@ git reflog expire --expire=now --all  # expire reflog to dereference objects
 git gc --aggressive --prune=now  # remove the old files
 ```
 
+## Subs
+
 <details>
 <summary>Subs.</summary>
 
@@ -346,12 +348,28 @@ git submodule add git@github.com:lukasz-lobocki/lobo_display_setup.git
 
 ## Subtrees
 
+Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) file.
+
 ### Add
 
 ```bash
-git remote add --force lobo_rig git@github.com:lukasz-lobocki/lobo_rig.git
-git subtree add --prefix git-subtree/lobo_rig lobo_rig main --squash
+git subtree add --prefix git-subtree/lobo_rig git@github.com:lukasz-lobocki/lobo_rig main --squash
 ```
+
+### Pull in new subtree commits
+
+If you want to pull in any new commits to the subtree from the remote, issue the same command as above, replacing `add` for `pull`:
+
+`git subtree pull --prefix git-subtree/lobo_rig git@github.com:lukasz-lobocki/lobo_rig master --squash`
+
+
+### Updating / Pushing to the subtree remote repository
+
+If you make a change to anything in `git-subtree/lobo_rig` the commit will be stored in the **host repository** and its logs. That is the biggest change from submodules.
+
+If you now want to update the subtree remote repository with that commit, you must run the same command, **excluding** `--squash` and replacing `pull` for `push`.
+
+`git subtree push --prefix git-subtree/lobo_rig git@github.com:lukasz-lobocki/lobo_rig master`
 
 ### Troubleshoot
 

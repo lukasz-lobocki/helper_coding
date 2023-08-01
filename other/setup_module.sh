@@ -116,13 +116,14 @@ ${RED}>>> ${NC}${BOLD}ERROR.${NOBOLD}
 # Just emitting message.
 echo -e "
 ${RED}>>> ${NC}To add ${BOLD}your own modules${NOBOLD} from GitHub.
-
 poetry ${BOLD}add${NOBOLD} --editable ${GREEN}git+ssh://git@github.com:lukasz-lobocki/...${NC}
 
 ${RED}>>> ${NC}To ${BOLD}make symlinks${NOBOLD} to your own modules.
-
 poetry ${BOLD}update${NOBOLD}
 ${BOLD}find${NOBOLD} ${GREEN}.venv/src/*/src/*${NC} -type f \( -iname '*.py' ! -iname '__init__.py' \) -print0 | xargs -0I@ ${BOLD}ln${NOBOLD} --relative --symbolic @ ${GREEN}sub${NC}
+
+${RED}>>> ${NC}To add ${BOLD}your own repositories${NOBOLD} from GitHub.
+git ${BOLD}subtree${NOBOLD} add --prefix git-subtree/${GREEN}<name> git@github.com:lukasz-lobocki/<name>${NC} main --squash
 
 ${RED}>>> ${NC}Upload to testPyPI.
 poetry ${BOLD}run${NOBOLD} twine upload ${GREEN}--repository testpypi${NC} dist/*
@@ -131,7 +132,6 @@ ${RED}>>> ${NC}Upload to PyPI - PRODUCTION.
 poetry ${BOLD}run${NOBOLD} twine upload dist/*
 
 ${RED}>>> ${NC}Typical workflow.
-
 git ${BOLD}add${NOBOLD} --update ${RED}&&${NC} git ${BOLD}commit${NOBOLD} -m \"${GREEN}fix: change${NC}\"
 poetry ${BOLD}run${NOBOLD} semantic-release ${GREEN}version${NC}
 git ${BOLD}push${NOBOLD}"
