@@ -249,7 +249,8 @@ gita shell \
   | grep --invert-match '^$' \
   | sort --ignore-leading-blanks --field-separator='^' --key=2 --reverse \
   | cut --delimiter='^' --fields=2 --complement \
-  | column --table --separator '^' --output-separator '  ' --table-columns 'Repo,Last commit,Github,Ahead/behind'
+  | column --table --separator '^' --output-separator '  ' \
+    --table-columns 'Repo,Last commit,Github,Ahead/behind'
 ```
 
 ## Detached head
