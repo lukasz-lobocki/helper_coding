@@ -1,8 +1,10 @@
-# fish_functions
+# FISH
 
-Copy to `~/.config/fish/functions`
+## Functions
 
-***
+Copy those `*.fish` files over to `~/.config/fish/functions`.
+
+## Exportable environment variables
 
 Issue following commands to update `~/.config/fish/fish_variables` with exportable environment variables.
 
@@ -18,7 +20,7 @@ set -Ux GH_USER 'lukasz-lobocki'
 set -Ux GH_TOKEN 'ghp...'
 ```
 
-***
+## Path
 
 Issue to populate fish's PATH
 

@@ -106,8 +106,10 @@ poetry add --group dev esptool
 ```
 
 ```bash
-poetry add --editable git++ssh://github.com/lukasz-lobocki/lobo_rig.git
+poetry add --editable git++ssh://github.com/lukasz-lobocki/lobo_rig
 ```
+
+</details>
 
 #### Linking src
 
@@ -117,8 +119,6 @@ find .venv/src/*/src/* \
   -print0 \
   | xargs -0I@ ln --relative --symbolic @ sub
 ```
-
-</details>
 
 ### Recreating environment
 
@@ -267,11 +267,13 @@ gita shell \
 ## Detached head
 
 ```bash
-git commit -m "my temp work, head reatachment" && git branch temp
+git commit -m "my temp work, head reatachment" \
+  && git branch temp
 ```
 
 ```bash
-git checkout main && git merge temp
+git checkout main \
+  && git merge temp
 ```
 
 ## Delete remote branch
@@ -291,12 +293,13 @@ git fetch --prune origin
 ## Switch to ssh
 
 ```bash
-git remote --verbose ; git remote rm origin
+git remote rm origin \
+  ; git remote --verbose
 ```
 
 ```bash
 git remote add origin \
-  git@github.com:lukasz-lobocki/transmitter_bme_nrf.git
+  git@github.com:lukasz-lobocki/transmitter_bme_nrf
 ```
 
 ```bash
@@ -304,7 +307,8 @@ git remote --verbose
 ```
 
 ```bash
-git fetch origin ; git push --set-upstream origin main
+git fetch origin \
+  && git push --set-upstream origin main
 ```
 
 ## Purging
@@ -337,71 +341,100 @@ git gc --aggressive --prune=now  # remove the old files
 
 ## Subs
 
-<details>
-<summary>Subs.</summary>
+For **_unknown_ reasons**, my own order of preference for dependencies management is:
 
-## Submodules
+1. Poetry.
+2. Subtrees.
+3. Submodules.
+
+<details>
+<summary>Submodules and subtrees.</summary>
+
+### Subtrees
+
+Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) page.
+
+#### Add
+
+```bash
+git subtree add \
+  --prefix git-subtree/lobo_rig \
+  git@github.com:lukasz-lobocki/lobo_rig main \
+  --squash
+```
+
+#### Pull in new subtree commits
+
+If you want to pull in any new commits to the subtree from the remote, issue the same command as above, replacing `add` for `pull`:
+
+```bash
+git subtree pull \
+  --prefix git-subtree/lobo_rig \
+  git@github.com:lukasz-lobocki/lobo_rig main \
+  --squash
+```
+
+#### Updating / Pushing to the subtree remote repository
+
+If you make a change to anything in `git-subtree/lobo_rig` the commit will be stored in the **host repository** and its logs. That is the biggest change from submodules.
+
+If you now want to update the subtree remote repository with that commit, you must run the same command, **excluding** `--squash` and replacing `pull` for `push`.
+
+```bash
+git subtree push \
+  --prefix git-subtree/lobo_rig \
+  git@github.com:lukasz-lobocki/lobo_rig main
+```
+
+#### Troubleshoot
+
+```bash
+git diff-index HEAD
+```
+
+#### List
+
+```bash
+git log \
+  | grep git-subtree-dir \
+  | tr -d ' ' \
+  | cut -d ":" -f2 \
+  | sort | uniq
+```
+
+```bash
+git log \
+  | grep git-subtree-dir \
+  | awk '{ print $2 }'
+```
+
+#### Document
+
+```bash
+git remote --verbose \
+  > .gitremote \
+  && git log \
+    | grep git-subtree-dir \
+    | tr -d ' ' | cut -d ":" -f2 \
+    | sort | uniq \
+    | xargs -I {} bash -c 'if [ -d $(git rev-parse --show-toplevel)/{} ] ; then echo {}; fi' \
+  > .gitsubtree
+```
+
+### Submodules
 
 Check [this](https://gist.github.com/gitaarik/8735255#file-git_submodules-md) page.
 
 ```bash
-git submodule add git@github.com:lukasz-lobocki/lobo_rig git-submodule/lobo_rig
+git submodule add \
+  git@github.com:lukasz-lobocki/lobo_rig \
+  git-submodule/lobo_rig
 ```
 
 To update the submodule.
 
 ```bash
 git submodule update --remote
-```
-
-
-## Subtrees
-
-Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) page.
-
-### Add
-
-```bash
-git subtree add --prefix git-subtree/lobo_rig git@github.com:lukasz-lobocki/lobo_rig main --squash
-```
-
-### Pull in new subtree commits
-
-If you want to pull in any new commits to the subtree from the remote, issue the same command as above, replacing `add` for `pull`:
-
-`git subtree pull --prefix git-subtree/lobo_rig git@github.com:lukasz-lobocki/lobo_rig master --squash`
-
-
-### Updating / Pushing to the subtree remote repository
-
-If you make a change to anything in `git-subtree/lobo_rig` the commit will be stored in the **host repository** and its logs. That is the biggest change from submodules.
-
-If you now want to update the subtree remote repository with that commit, you must run the same command, **excluding** `--squash` and replacing `pull` for `push`.
-
-`git subtree push --prefix git-subtree/lobo_rig git@github.com:lukasz-lobocki/lobo_rig master`
-
-### Troubleshoot
-
-```bash
-git diff-index HEAD
-```
-
-### List
-
-```bash
-git log | grep git-subtree-dir | tr -d ' ' | cut -d ":" -f2 | sort | uniq
-git log | grep git-subtree-dir | awk '{ print $2 }'
-```
-
-### Document
-
-```bash
-git remote --verbose > .gitremote && git log \
-  | grep git-subtree-dir \
-  | tr -d ' ' | cut -d ":" -f2 \
-  | sort | uniq \
-  | xargs -I {} bash -c 'if [ -d $(git rev-parse --show-toplevel)/{} ] ; then echo {}; fi' \
-  > .gitsubtree
 ```
 
 ## requirements.txt
