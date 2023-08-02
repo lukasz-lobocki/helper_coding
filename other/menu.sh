@@ -7,19 +7,21 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-get_poetry_status(){
-  local POETRYSTATUS
-  poetry check > /dev/null 2>&1
-  POETRYSTATUS=$?
-  echo "${POETRYSTATUS}"
-  return 0
-}
+# gets_
 
 get_git_status() {
   local GITSTATUS
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
   GITSTATUS=$?
   echo "${GITSTATUS}"
+  return 0
+}
+
+get_poetry_status(){
+  local POETRYSTATUS
+  poetry check > /dev/null 2>&1
+  POETRYSTATUS=$?
+  echo "${POETRYSTATUS}"
   return 0
 }
 
@@ -76,26 +78,6 @@ get_choice_no_poetry(){
   return ${MENUSTATUS}
 }
 
-get_module_name(){
-  local REPLY
-  REPLY=$(whiptail --inputbox "What is your module name?" 8 39 --title "Module name" \
-    3>&1 1>&2 2>&3)
-  MENUSTATUS=$?
-
-  echo "${REPLY}"
-  return ${MENUSTATUS}
-}
-
-show_git_info(){
-  echo -e "\n${RED}>>> ${NC}Git log top entry.\n"
-  git log -n 1 --decorate --oneline
-  echo -e "\n${RED}>>> ${NC}Git subtrees.\n"
-  git log | grep git-subtree-dir | tr -d ' ' | cut -d ":" -f2 | sort | uniq
-  echo -e "\n${RED}>>> ${NC}Git remote show.\n"
-  git remote show origin
-  return $?
-}
-
 get_commit_type(){
   local REPLY
   REPLY=$(whiptail --title "Commit message type" --menu \
@@ -125,6 +107,30 @@ get_commit_message(){
   echo "${REPLY}"
   return ${MENUSTATUS}
 }
+
+get_module_name(){
+  local REPLY
+  REPLY=$(whiptail --inputbox "What is your module name?" 8 39 --title "Module name" \
+    3>&1 1>&2 2>&3)
+  MENUSTATUS=$?
+
+  echo "${REPLY}"
+  return ${MENUSTATUS}
+}
+
+# shows_
+
+show_git_info(){
+  echo -e "\n${RED}>>> ${NC}Git log top entry.\n"
+  git log -n 1 --decorate --oneline
+  echo -e "\n${RED}>>> ${NC}Git subtrees.\n"
+  git log | grep git-subtree-dir | tr -d ' ' | cut -d ":" -f2 | sort | uniq
+  echo -e "\n${RED}>>> ${NC}Git remote show.\n"
+  git remote show origin
+  return $?
+}
+
+# runs_
 
 run_push(){
   echo -e "\n${RED}>>> ${NC}Git pushing.\n"
