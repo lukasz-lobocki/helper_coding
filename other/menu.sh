@@ -100,7 +100,9 @@ get_commit_type(){
 
 get_commit_message(){
   local REPLY
-  REPLY=$(whiptail --inputbox "What is your commit message?" 8 39 "$1: Amend." --title "Commit message"\
+  local COMMIT_TYPE
+  COMMIT_TYPE=$(get_commit_type) || exit $?
+  REPLY=$(whiptail --inputbox "What is your commit message?" 8 39 "$COMMIT_TYPE: Amend." --title "Commit message"\
     3>&1 1>&2 2>&3)
   MENUSTATUS=$?
 
@@ -173,7 +175,6 @@ main() {
   local GITSTATUS
   local REPLY
   local MODULE_NAME
-  local COMMIT_TYPE
   local COMMIT_MESSAGE
   local POETRYSTATUS
   local ACTION
@@ -209,8 +210,7 @@ main() {
       echo -e "\n${RED}>>> ${NC}Git add update.\n"
       git add -u
 
-      COMMIT_TYPE=$(get_commit_type) || exit $?
-      COMMIT_MESSAGE=$(get_commit_message "${COMMIT_TYPE}")  || exit $?
+      COMMIT_MESSAGE=$(get_commit_message)  || exit $?
       echo -e "\n${RED}>>> ${NC}${GREEN}${COMMIT_MESSAGE}${NC} chosen.\n"
 
       echo -e "\n${RED}>>> ${NC}Commiting.\n"
