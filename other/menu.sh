@@ -102,8 +102,9 @@ get_commit_message(){
   local REPLY
   local COMMIT_TYPE
   COMMIT_TYPE=$(get_commit_type) || exit $?
-  REPLY=$(whiptail --inputbox "What is your commit message?" 8 39 "$COMMIT_TYPE: Amend." --title "Commit message"\
-    3>&1 1>&2 2>&3)
+  REPLY=$(whiptail --inputbox "What is your commit message?" 8 39 "$COMMIT_TYPE: $(echo "$COMMIT_TYPE." | sed -e 's/\b\(.\)/\u\1/g')" \
+    --title "Commit message" \
+  3>&1 1>&2 2>&3)
   MENUSTATUS=$?
 
   echo "${REPLY}"
