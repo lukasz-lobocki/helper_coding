@@ -342,13 +342,22 @@ git gc --aggressive --prune=now  # remove the old files
 
 ## Submodules
 
+Check [this](https://gist.github.com/gitaarik/8735255#file-git_submodules-md) page.
+
 ```bash
-git submodule add git@github.com:lukasz-lobocki/lobo_display_setup.git
+git submodule add git@github.com:lukasz-lobocki/lobo_rig git-submodule/lobo_rig
 ```
+
+To update the submodule.
+
+```bash
+git submodule update --remote
+```
+
 
 ## Subtrees
 
-Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) file.
+Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) page.
 
 ### Add
 
