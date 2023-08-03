@@ -25,26 +25,16 @@ get_poetry_status(){
   return 0
 }
 
-get_choice_repo_exists(){
+# choice_menus_
+
+get_choice_action(){
   local REPLY
+  local QUESTION
+  QUESTION=("$@")
   REPLY=$(whiptail --title "Git" --menu "Choose option then press Ok" 15 78 6 --notags \
-    "info" " info " \
-    "git:add-update commit push" " git:add-update commit [push] " \
+    "${QUESTION[@]}" \
   3>&1 1>&2 2>&3)
 
-  MENUSTATUS=$?
-
-  echo "${REPLY}"
-  return ${MENUSTATUS}
-}
-
-get_choice_no_repo(){
-  local REPLY
-  # Requires https://github.com/nosarthur/gita
-  REPLY=$(whiptail --title "Git" --menu "Choose an option then press Ok" 15 78 6 --notags \
-    "gital" " gital " \
-    "setup module" " setup module " \
-  3>&1 1>&2 2>&3)
   MENUSTATUS=$?
 
   echo "${REPLY}"
@@ -53,11 +43,14 @@ get_choice_no_repo(){
 
 get_choice_poetry_exists(){
   local REPLY
-  REPLY=$(whiptail --title "Action" --menu --notags \
-    "Choose action then press Ok" 20 78 3 \
+  local QUESTION
+  QUESTION=( \
     "nop" " Just commit " \
     "poetry" " git:commit poetry:run semantic-release version " \
     "push" " git:commit push " \
+  )
+  REPLY=$(whiptail --title "Action" --menu --notags "Choose action then press Ok" 20 78 3 \
+    "${QUESTION[@]}" \
   3>&1 1>&2 2>&3)
   MENUSTATUS=$?
 
@@ -67,10 +60,13 @@ get_choice_poetry_exists(){
 
 get_choice_no_poetry(){
   local REPLY
-  REPLY=$(whiptail --title "Action" --menu --notags \
-    "Choose action then press Ok" 20 78 3 \
+  local QUESTION
+  QUESTION=( \
     "nop" " Just commit " \
     "push" " git:commit push " \
+  )
+  REPLY=$(whiptail --title "Action" --menu --notags "Choose action then press Ok" 20 78 3 \
+    "${QUESTION[@]}" \
   3>&1 1>&2 2>&3)
   MENUSTATUS=$?
 
@@ -78,10 +74,10 @@ get_choice_no_poetry(){
   return ${MENUSTATUS}
 }
 
-get_commit_type(){
+get_choice_commit_type(){
   local REPLY
-  REPLY=$(whiptail --title "Commit message type" --menu \
-    "Choose commit type then press Ok" 20 78 8 \
+  local QUESTION
+  QUESTION=( \
     "chore" "Changes to the auxiliary tools and libraries" \
     "fix" "A bug fix" \
     "feat" "A new feature" \
@@ -91,6 +87,9 @@ get_commit_type(){
     "style" "Changes formatting that do not affect the meaning" \
     "refactor" "A code change that is not a bug fix nor a feature " \
     "test" "Adding missing or correcting existing tests" \
+  )
+  REPLY=$(whiptail --title "Commit message type" --menu "Choose commit type then press Ok" 20 78 8 \
+    "${QUESTION[@]}" \
   3>&1 1>&2 2>&3)
   MENUSTATUS=$?
 
@@ -98,10 +97,12 @@ get_commit_type(){
   return ${MENUSTATUS}
 }
 
+# inputboxes_
+
 get_commit_message(){
   local REPLY
   local COMMIT_TYPE
-  COMMIT_TYPE=$(get_commit_type) || exit $?
+  COMMIT_TYPE=$(get_choice_commit_type) || exit $?
   REPLY=$(whiptail --inputbox "What is your commit message?" 8 39 "$COMMIT_TYPE: $(echo "$COMMIT_TYPE." | sed -e 's/\b\(.\)/\u\1/g')" \
     --title "Commit message" \
   3>&1 1>&2 2>&3)
@@ -181,14 +182,26 @@ main() {
   local ACTION
   local URL
   local HTTPSURL
+  local QUESTION
 
   GITSTATUS=$(get_git_status) || exit $?
 
+  QUESTION=( \
+    "gital" " gital " \
+  )
+
   if [[ $GITSTATUS == "0" ]]; then  # repo exists
-    REPLY=$(get_choice_repo_exists) || exit $?
+    QUESTION+=( \
+      "info" " info " \
+      "git:add-update commit push" " git:add-update commit [push] " \
+    )
   else  # no repo
-    REPLY=$(get_choice_no_repo) || exit $?
+    QUESTION+=( \
+      "setup module" " setup module " \
+    )
   fi
+
+  REPLY=$(get_choice_action "${QUESTION[@]}") || exit $?
 
   echo -e "\n${RED}>>> ${NC}${GREEN}${REPLY}${NC} chosen.\n"
 
@@ -217,12 +230,21 @@ main() {
       echo -e "\n${RED}>>> ${NC}Commiting.\n"
       git commit -m "${COMMIT_MESSAGE}"
 
+    QUESTION=( \
+      "nop" " Just commit " \
+      "push" " git:commit push " \
+    )
+
       POETRYSTATUS=$(get_poetry_status) || exit $?
       if [[ $POETRYSTATUS == "0" ]]; then  # repo is poetry managed
-        ACTION=$(get_choice_poetry_exists) || exit $?
+        QUESTION+=( \
+          "poetry" " git:commit poetry:run semantic-release version " \          
+        )
       else  # repo not poetry managed
-        ACTION=$(get_choice_no_poetry) || exit $?
+        :
       fi
+
+      ACTION=$(get_choice_action "${QUESTION[@]}") || exit $?
 
       echo -e "\n${RED}>>> ${NC}${GREEN}${ACTION}${NC} chosen.\n"
       case $ACTION in

@@ -26,7 +26,7 @@ set -Ux GH_TOKEN 'ghp...'
 
 ### Borgbackup
 
-Check [this](https://borgbackup.readthedocs.io/en/stable/faq.html?highlight=BORG_PASSCOMMAND#how-can-i-specify-the-encryption-passphrase-programmatically) and [this](https://borgbackup.readthedocs.io/en/stable/usage/key.html0 files.
+Check [this](https://borgbackup.readthedocs.io/en/stable/faq.html?highlight=BORG_PASSCOMMAND#how-can-i-specify-the-encryption-passphrase-programmatically) and [this](https://borgbackup.readthedocs.io/en/stable/usage/key.html) files.
 
 ```bash
 set -Ux BORG_PASSCOMMAND "cat $HOME/.borg-passphrase"
