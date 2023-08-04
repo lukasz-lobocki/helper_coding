@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xuo pipefail
+set -uo pipefail
 IFS=$'\n\t'
 
 GREEN='\033[0;32m'
@@ -41,68 +41,24 @@ get_choice_action(){
   return ${MENUSTATUS}
 }
 
-get_choice_poetry_exists(){
-  local REPLY
-  local QUESTION
-  QUESTION=( \
-    "nop" " Just commit " \
-    "poetry" " git:commit poetry:run semantic-release version " \
-    "push" " git:commit push " \
-  )
-  REPLY=$(whiptail --title "Action" --menu --notags "Choose action then press Ok" 20 78 3 \
-    "${QUESTION[@]}" \
-  3>&1 1>&2 2>&3)
-  MENUSTATUS=$?
-
-  echo "${REPLY}"
-  return ${MENUSTATUS}
-}
-
-get_choice_no_poetry(){
-  local REPLY
-  local QUESTION
-  QUESTION=( \
-    "nop" " Just commit " \
-    "push" " git:commit push " \
-  )
-  REPLY=$(whiptail --title "Action" --menu --notags "Choose action then press Ok" 20 78 3 \
-    "${QUESTION[@]}" \
-  3>&1 1>&2 2>&3)
-  MENUSTATUS=$?
-
-  echo "${REPLY}"
-  return ${MENUSTATUS}
-}
-
-get_choice_commit_type(){
-  local REPLY
-  local QUESTION
-  QUESTION=( \
-    "chore" "Changes to the auxiliary tools and libraries" \
-    "fix" "A bug fix" \
-    "feat" "A new feature" \
-    "build" "Changes to the build process" \
-    "docs" "Documentation only changes" \
-    "perf" "A code change that improves performance" \
-    "style" "Changes formatting that do not affect the meaning" \
-    "refactor" "A code change that is not a bug fix nor a feature " \
-    "test" "Adding missing or correcting existing tests" \
-  )
-  REPLY=$(whiptail --title "Commit message type" --menu "Choose commit type then press Ok" 20 78 8 \
-    "${QUESTION[@]}" \
-  3>&1 1>&2 2>&3)
-  MENUSTATUS=$?
-
-  echo "${REPLY}"
-  return ${MENUSTATUS}
-}
-
 # inputboxes_
 
 get_commit_message(){
   local REPLY
   local COMMIT_TYPE
-  COMMIT_TYPE=$(get_choice_commit_type) || exit $?
+  local QUESTION
+  QUESTION=( \
+    "chore" "chore: Changes to the auxiliary tools" \
+    "fix" "fix: Bug fix" \
+    "feat" "feat: New feature" \
+    "build" "build: Changes to the build process" \
+    "docs" "docs: Documentation only changes" \
+    "perf" "perf: Code change that improves performance" \
+    "style" "style: Changes formatting that do not affect the meaning" \
+    "refactor" "refactor: Code change that is not a bug fix nor a feature " \
+    "test" "test: Adding missing or correcting existing tests" \
+  )
+  COMMIT_TYPE=$(get_choice_action "${QUESTION[@]}") || exit $?
   REPLY=$(whiptail --inputbox "What is your commit message?" 8 39 "$COMMIT_TYPE: $(echo "$COMMIT_TYPE." | sed -e 's/\b\(.\)/\u\1/g')" \
     --title "Commit message" \
   3>&1 1>&2 2>&3)
@@ -186,16 +142,19 @@ main() {
 
   GITSTATUS=$(get_git_status) || exit $?
 
+  # Question that is always valid
   QUESTION=( \
     "gital" " gital " \
   )
 
   if [[ $GITSTATUS == "0" ]]; then  # repo exists
+    # Adding questions valid for repo
     QUESTION+=( \
       "info" " info " \
       "git:add-update commit push" " git:add-update commit [push] " \
     )
   else  # no repo
+    # Adding questions valid for no repo
     QUESTION+=( \
       "setup module" " setup module " \
     )
@@ -230,6 +189,7 @@ main() {
       echo -e "\n${RED}>>> ${NC}Commiting.\n"
       git commit -m "${COMMIT_MESSAGE}"
 
+    # Question that is always valid
     QUESTION=( \
       "nop" " Just commit " \
       "push" " git:commit push " \
@@ -237,6 +197,7 @@ main() {
 
       POETRYSTATUS=$(get_poetry_status) || exit $?
       if [[ $POETRYSTATUS == "0" ]]; then  # repo is poetry managed
+        # Adding questions valid for poetry
         QUESTION+=( \
           "poetry" " git:commit poetry:run semantic-release version " \
         )
