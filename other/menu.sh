@@ -31,7 +31,7 @@ get_choice_action(){
   local REPLY
   local QUESTION
   QUESTION=("$@")
-  REPLY=$(whiptail --title "Git" --menu "Choose option then press Ok" 15 78 6 --notags \
+  REPLY=$(whiptail --title "Git" --menu "Choose option then press Ok" 15 78 8 --notags \
     "${QUESTION[@]}" \
   3>&1 1>&2 2>&3)
 
