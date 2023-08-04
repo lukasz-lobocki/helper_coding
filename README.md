@@ -124,7 +124,7 @@ find .venv/src/*/src/* \
 
 Do the following in the folder with `pyproject.toml`.
 
-Stop the current virtualenv, if active. Alternatively use `exit` to exit from a Poetry shell session. Remove all files of the current environment of the folder you are in, then reactivate Poetry shell.
+:warning: Stop the current virtualenv, if active. Alternatively use `exit` to exit from a Poetry shell session. Remove all files of the current environment of the folder you are in, then reactivate Poetry shell.
 
 ```bash
 deactivate \
