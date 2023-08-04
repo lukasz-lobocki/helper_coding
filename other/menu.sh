@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -uo pipefail
+set -xuo pipefail
 IFS=$'\n\t'
 
 GREEN='\033[0;32m'
@@ -238,7 +238,7 @@ main() {
       POETRYSTATUS=$(get_poetry_status) || exit $?
       if [[ $POETRYSTATUS == "0" ]]; then  # repo is poetry managed
         QUESTION+=( \
-          "poetry" " git:commit poetry:run semantic-release version " \          
+          "poetry" " git:commit poetry:run semantic-release version " \
         )
       else  # repo not poetry managed
         :
