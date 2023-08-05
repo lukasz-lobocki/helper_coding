@@ -106,7 +106,7 @@ poetry add --group dev esptool
 ```
 
 ```bash
-poetry add --editable git+ssh://github.com/lukasz-lobocki/lobo_rig
+poetry add --editable git+ssh://git@github.com/lukasz-lobocki/lobo_rig
 ```
 
 </details>
