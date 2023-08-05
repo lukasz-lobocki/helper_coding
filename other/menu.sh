@@ -225,9 +225,9 @@ main() {
     git status --short --branch
     URL=$(git config --get remote.origin.url)
     HTTPSURL="https://github.com/${URL#*:}"
-    echo -e "\n${RED}>>> ${NC}Option ${GREEN}${REPLY}${NC} completed on ${GREEN}${HTTPSURL}${NC}\n"
+    echo -e "\n${RED}>>> ${NC}Choice ${GREEN}${REPLY}${NC} completed on ${GREEN}${HTTPSURL}${NC}\n"
   else
-    echo -e "\n${RED}>>> ${NC}Option ${GREEN}${REPLY}${NC} completed\n"
+    echo -e "\n${RED}>>> ${NC}Choice ${GREEN}${REPLY}${NC} completed\n"
   fi
 }
 
