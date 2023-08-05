@@ -25,13 +25,11 @@ cd esp-idf
 
 Check [here](https://github.com/micropython/micropython/tree/master/ports/esp32) if `v5.0.2` is still the proper one.
 
-```bash
-./install.sh
-```
+`./install.sh` or `./install.fish`
 
-```bash
-source export.sh
-```
+then
+
+`source export.sh` or `source export.fish`
 
 ## Clone micropython source
 
@@ -119,8 +117,22 @@ cd lobo_micropython
 ```
 
 ```bash
+git checkout ADAFRUIT_4M_2M_SPIRAM
+```
+
+```bash
 pushd ../esp-idf \
   && source export.sh \
+  && popd \
+  && make -C mpy-cross \
+  && make -C ports/esp32 submodules all BOARD=ADAFRUIT_4M_2M_SPIRAM
+```
+
+or, for _Fish_.
+
+```bash
+pushd ../esp-idf \
+  && source export.fish \
   && popd \
   && make -C mpy-cross \
   && make -C ports/esp32 submodules all BOARD=ADAFRUIT_4M_2M_SPIRAM
