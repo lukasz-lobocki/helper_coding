@@ -1,6 +1,6 @@
 # Build micropython with SPIRAM
 
-![ESP](https://gist.githubusercontent.com/lukasz-lobocki/706e2d53d86a0ba8085aed76dc07049b/raw/6f6bf3bcffee4b62b99c8ea6c9332b2f92a45f71/Feather%2520ESP32-S3%2520SPIRAM.png)
+![ESP](https://github.com/lukasz-lobocki/helper_coding/blob/main/other/Feather%20ESP32-S3%20SPIRAM.png)
 
 Check [this](https://github.com/micropython/micropython/tree/master/ports/esp32) page.
 
@@ -36,8 +36,8 @@ source export.sh
 ## Clone micropython source
 
 ```bash
-git clone git@github.com:lukasz-lobocki/micropython.git \
-  && cd micropython
+git clone git@github.com:lukasz-lobocki/lobo_micropython \
+  && cd lobo_micropython
 ```
 
 ```bash
@@ -45,7 +45,7 @@ git remote add upstream git@github.com:micropython/micropython.git
 ```
 
 ```bash
-git checkout -b dev-branch
+git checkout -b <dev-branch>
 ```
 
 <details>
@@ -81,7 +81,7 @@ CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv" # This pointed to 'parti
 ```
 
 ```bash
-cd micropython
+cd lobo_micropython
 pushd ../espressif/esp-idf \
   && source export.sh \
   && popd
@@ -115,29 +115,33 @@ esptool --port /dev/ttyACM0 --baud 460800 --chip esp32s3 \
 makes **all-in-one**.
 
 ```bash
-cd micropython
+cd lobo_micropython
 ```
 
 ```bash
-pushd ../espressif/esp-idf \
+pushd ../esp-idf \
   && source export.sh \
   && popd \
   && make -C mpy-cross \
   && make -C ports/esp32 submodules all BOARD=ADAFRUIT_4M_2M_SPIRAM
 ```
-Cleaning.
+
+<details>
+<summary>Cleaning.</summary>
 
 ```bash
-cd micropython
+cd lobo_micropython
 ```
 
 ```bash
-pushd ../espressif/esp-idf \
+pushd ../esp-idf \
   && source export.sh \
   && popd \
   && make -C mpy-cross clean \
   && make -C ports/esp32 clean BOARD=ADAFRUIT_4M_2M_SPIRAM
 ```
+
+</details>
 
 ## Output
 
