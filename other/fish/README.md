@@ -37,5 +37,12 @@ set -Ux BORG_PASSCOMMAND "cat $HOME/.borg-passphrase"
 Issue to populate fish's PATH
 
 ```bash
-fish_add_path -m /usr/local/bin /usr/bin /home/lukasz/.local/bin /bin /usr/local/go/bin /snap/bin /sbin /usr/sbin
+fish_add_path -m \
+  /usr/local/bin \
+  /usr/bin \
+  /home/lukasz/.local/bin \
+  /bin \
+  /usr/local/go/bin \
+  /home/lukasz/.cargo/bin \
+  /snap/bin
 ```
