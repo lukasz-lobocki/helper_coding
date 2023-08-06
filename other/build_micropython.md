@@ -26,15 +26,15 @@ cd esp-idf
 Check [here](https://github.com/micropython/micropython/tree/master/ports/esp32) if `v5.0.2` is still the proper one.
 
 ```bash
-set -q "fish_pid" > /dev/null 2>&1 || ./install.sh
-set -q "fish_pid" > /dev/null 2>&1 && ./install.fish
+fish_greeting > /dev/null 2>&1 || ./install.sh
+fish_greeting > /dev/null 2>&1 && ./install.fish
 ```
 
 then
 
 ```bash
-set -q "fish_pid" > /dev/null 2>&1 || source export.sh
-set -q "fish_pid" > /dev/null 2>&1 && source export.fish
+fish_greeting > /dev/null 2>&1 || source export.sh
+fish_greeting > /dev/null 2>&1 && source export.fish
 ```
 
 ## Clone micropython source
@@ -215,3 +215,7 @@ esptool --chip esp32s3 --port /dev/ttyACM0 write_flash 0x8000 partition-table.bi
 ```
 
 </details>
+
+## Workflow
+
+Read [this](https://github.com/micropython/micropython/wiki/Micropython-Git-Development-Workflow) page.
