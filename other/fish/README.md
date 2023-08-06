@@ -4,6 +4,17 @@
 
 Copy those `*.fish` files over to `~/.config/fish/functions`.
 
+## How to do different actions if it runs on Fish
+
+Command `set -q VARIABLE` is specific to fish.
+
+```bash
+set -q "fish_pid" > /dev/null 2>&1 \
+  || echo "not fish"
+set -q "fish_pid" > /dev/null 2>&1 \
+  && echo "fish"
+```
+
 ## Exportable environment variables
 
 Issue following commands to update `~/.config/fish/fish_variables` with exportable environment variables.

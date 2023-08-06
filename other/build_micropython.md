@@ -11,7 +11,7 @@ sudo apt install build-essential git python3 python3-dev \
   python3-pip python3-setuptools python3-venv cmake
 ```
 
-Usually already installed, maybe with the exceptionf for `cmake`.
+Usually already installed, maybe with the exception for `cmake`.
 
 ## Install the ESP-IDF
 
@@ -25,11 +25,17 @@ cd esp-idf
 
 Check [here](https://github.com/micropython/micropython/tree/master/ports/esp32) if `v5.0.2` is still the proper one.
 
-`./install.sh` or `./install.fish`
+```bash
+set -q "fish_pid" > /dev/null 2>&1 || ./install.sh
+set -q "fish_pid" > /dev/null 2>&1 && ./install.fish
+```
 
 then
 
-`source export.sh` or `source export.fish`
+```bash
+set -q "fish_pid" > /dev/null 2>&1 || source export.sh
+set -q "fish_pid" > /dev/null 2>&1 && source export.fish
+```
 
 ## Clone micropython source
 
@@ -160,8 +166,8 @@ pushd ../esp-idf \
 See the result.
 
 ```bash
-grep -E 'app_bin|target|project' \
-  ports/esp32/build-ADAFRUIT_4M_2M_SPIRAM/project_description.json ; \
+grep -E 'project_name|target|build_dir' \
+  ports/esp32/build-ADAFRUIT_4M_2M_SPIRAM/project_description.json | sed -e 's/^[[:space:]]*//' ; \
 echo "" ; \
 grep -E '^(CONFIG_ESPTOOLPY_FLASHSIZE|CONFIG_PARTITION_TABLE_CUSTOM)' \
   ports/esp32/build-ADAFRUIT_4M_2M_SPIRAM/sdkconfig
@@ -172,6 +178,8 @@ grep -E '^0x' ports/esp32/build-ADAFRUIT_4M_2M_SPIRAM/flash_args \
 ```
 
 ## Flashing
+
+Erasing.
 
 ```bash
 esptool --chip esp32s3 --port /dev/ttyACM0 --after no_reset \
