@@ -34,7 +34,7 @@ ${RED}>>> ${NC}Package name: ${BOLD}${NAME}${NOBOLD}"
 echo -e "
 ${RED}>>> ${NC}Cookiecutting the folder structure.
 "
-cookiecutter git+ssh://git@github.com/lukasz-lobocki/py-pkgs-cookiecutter.git package_name="${NAME}"
+cookiecutter git+ssh://git@github.com/lukasz-lobocki/py-pkgs-cookiecutter --checkout main package_name="${NAME}"
 cd "${NAME}"
 
 echo -e "
