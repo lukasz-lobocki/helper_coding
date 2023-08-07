@@ -78,7 +78,7 @@ git commit -m "feat: Repo initiation."
 echo -e "
 ${RED}>>> ${NC}Creating remote on GitHub.
 "
-gh repo create "${NAME}" --private --disable-issues --disable-wiki \
+gh repo create "${NAME}" --public --disable-issues --disable-wiki \
   --description "$(grep "^description =" pyproject.toml | awk -F'"' '{print $2}')"
 git branch --move --force main
 git remote add origin git@github.com:lukasz-lobocki/"${NAME}"
