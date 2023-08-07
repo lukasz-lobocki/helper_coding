@@ -114,6 +114,10 @@ esptool --port /dev/ttyACM0 --baud 460800 --chip esp32s3 \
 
 </details>
 
+## Workflow
+
+Read [this](https://github.com/micropython/micropython/wiki/Micropython-Git-Development-Workflow) page.
+
 ## Compilation
 
 makes **all-in-one**.
@@ -215,7 +219,3 @@ esptool --chip esp32s3 --port /dev/ttyACM0 write_flash 0x8000 partition-table.bi
 ```
 
 </details>
-
-## Workflow
-
-Read [this](https://github.com/micropython/micropython/wiki/Micropython-Git-Development-Workflow) page.

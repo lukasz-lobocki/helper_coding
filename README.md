@@ -41,6 +41,202 @@ sed 's/[[:blank:]]*$//' <file>
 
 </details>
 
+## Workflow
+
+1. Don't do any work in `main` branch, it belongs to the upstream project.
+2. Do any work in **dedicated** topic branches `git checkout -b <dedicated-branch>`. _This **is not** really related to `git rebase` **workflow apporach**. It's part of version control systems best practices at all._
+3. _Pull_ upstream changes into your `main` branch.
+4. Propagate to your topic branch using `git switch <dedicated-branch>` `git rebase main`.
+5. If you need to do code changes, **do new commits** to apply small changes you need (like removing a single line with `debug printf()`). This better be done _one by one_, with rebase interactive (next step) after each such auxiliary commit, to not lose track.
+6. Do `git rebase -i main`. Your editor will pop up, carefully read instructions.
+   - Use `r` action code to edit commit messages, reorder commits, and
+   - Use `f` to apply fix-up commits you created.
+7. Once satisfied, submit a _pull request_.
+8. You may get suggestions for changes, if they're small, treat them as fix-up commits, and repeat from step 5.
+9. Re-push your pull request using `git push origin HEAD --force`
+10. Repeat from step 8.
+
+## Detached head
+
+```bash
+git commit -m "my temp work, head reatachment" \
+  && git branch temp
+```
+
+```bash
+git checkout main \
+  && git merge temp
+```
+
+## Delete remote branch
+
+```bash
+git branch --remotes
+```
+
+```bash
+git push origin --delete wip
+```
+
+```bash
+git fetch --prune origin
+```
+
+## Switch to ssh
+
+```bash
+git remote rm origin \
+  ; git remote --verbose
+```
+
+```bash
+git remote add origin \
+  git@github.com:lukasz-lobocki/transmitter_bme_nrf
+```
+
+```bash
+git remote --verbose
+```
+
+```bash
+git fetch origin \
+  && git push --set-upstream origin main
+```
+
+## Purging
+
+Make the current commit the only (initial) commit in a Git repository.
+
+:warning: It is mandatory to **do backup**.
+
+:information_source: Requires `main` branch **not protected**, see this [page](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
+
+```bash
+git checkout --orphan newBranch \
+  && git add --all
+  && git commit
+```
+
+```bash
+git branch --delete --force main \
+  && git branch --move main \
+  && git push --force origin main
+```
+
+```bash
+git reflog expire --expire=now --all  # expire reflog to dereference objects
+```
+
+```bash
+git gc --aggressive --prune=now  # remove the old files
+```
+
+## Subs
+
+For **_unknown_ reasons**, my own order of preference for dependencies management is:
+
+1. Poetry.
+2. Subtrees.
+3. Submodules.
+
+<details>
+<summary>Submodules and subtrees.</summary>
+
+### Subtrees
+
+Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) page.
+
+#### Add
+
+```bash
+git subtree add \
+  --prefix git-subtree/lobo_rig \
+  git@github.com:lukasz-lobocki/lobo_rig main \
+  --squash
+```
+
+#### Pull in new subtree commits
+
+If you want to pull in any new commits to the subtree from the remote, issue the same command as above, replacing `add` for `pull`:
+
+```bash
+git subtree pull \
+  --prefix git-subtree/lobo_rig \
+  git@github.com:lukasz-lobocki/lobo_rig main \
+  --squash
+```
+
+#### Updating / Pushing to the subtree remote repository
+
+If you make a change to anything in `git-subtree/lobo_rig` the commit will be stored in the **host repository** and its logs. That is the biggest change from submodules.
+
+If you now want to update the subtree remote repository with that commit, you must run the same command, **excluding** `--squash` and replacing `pull` for `push`.
+
+```bash
+git subtree push \
+  --prefix git-subtree/lobo_rig \
+  git@github.com:lukasz-lobocki/lobo_rig main
+```
+
+#### Troubleshoot
+
+```bash
+git diff-index HEAD
+```
+
+#### List
+
+```bash
+git log \
+  | grep git-subtree-dir \
+  | tr -d ' ' \
+  | cut -d ":" -f2 \
+  | sort | uniq
+```
+
+```bash
+git log \
+  | grep git-subtree-dir \
+  | awk '{ print $2 }'
+```
+
+#### Document
+
+```bash
+git remote --verbose \
+  > .gitremote \
+  && git log \
+    | grep git-subtree-dir \
+    | tr -d ' ' | cut -d ":" -f2 \
+    | sort | uniq \
+    | xargs -I {} bash -c 'if [ -d $(git rev-parse --show-toplevel)/{} ] ; then echo {}; fi' \
+  > .gitsubtree
+```
+
+### Submodules
+
+Check [this](https://gist.github.com/gitaarik/8735255#file-git_submodules-md) page.
+
+```bash
+git submodule add \
+  git@github.com:lukasz-lobocki/lobo_rig \
+  git-submodule/lobo_rig
+```
+
+To update the submodule.
+
+```bash
+git submodule update --remote
+```
+
+## requirements.txt
+
+```bash
+pipreqs --print
+```
+
+</details>
+
 ## Poetry
 
 ### Basic versioning
@@ -263,187 +459,6 @@ gita shell \
   | column --table --separator '^' --output-separator '  ' \
     --table-columns 'Repo,Last commit,Github,Ahead/behind'
 ```
-
-## Detached head
-
-```bash
-git commit -m "my temp work, head reatachment" \
-  && git branch temp
-```
-
-```bash
-git checkout main \
-  && git merge temp
-```
-
-## Delete remote branch
-
-```bash
-git branch --remotes
-```
-
-```bash
-git push origin --delete wip
-```
-
-```bash
-git fetch --prune origin
-```
-
-## Switch to ssh
-
-```bash
-git remote rm origin \
-  ; git remote --verbose
-```
-
-```bash
-git remote add origin \
-  git@github.com:lukasz-lobocki/transmitter_bme_nrf
-```
-
-```bash
-git remote --verbose
-```
-
-```bash
-git fetch origin \
-  && git push --set-upstream origin main
-```
-
-## Purging
-
-Make the current commit the only (initial) commit in a Git repository.
-
-:warning: It is mandatory to **do backup**.
-
-:information_source: Requires `main` branch **not protected**, see this [page](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
-
-```bash
-git checkout --orphan newBranch \
-  && git add --all
-  && git commit
-```
-
-```bash
-git branch --delete --force main \
-  && git branch --move main \
-  && git push --force origin main
-```
-
-```bash
-git reflog expire --expire=now --all  # expire reflog to dereference objects
-```
-
-```bash
-git gc --aggressive --prune=now  # remove the old files
-```
-
-## Subs
-
-For **_unknown_ reasons**, my own order of preference for dependencies management is:
-
-1. Poetry.
-2. Subtrees.
-3. Submodules.
-
-<details>
-<summary>Submodules and subtrees.</summary>
-
-### Subtrees
-
-Check [this](https://gist.github.com/SKempin/b7857a6ff6bddb05717cc17a44091202#file-git-subtree-basics-md) page.
-
-#### Add
-
-```bash
-git subtree add \
-  --prefix git-subtree/lobo_rig \
-  git@github.com:lukasz-lobocki/lobo_rig main \
-  --squash
-```
-
-#### Pull in new subtree commits
-
-If you want to pull in any new commits to the subtree from the remote, issue the same command as above, replacing `add` for `pull`:
-
-```bash
-git subtree pull \
-  --prefix git-subtree/lobo_rig \
-  git@github.com:lukasz-lobocki/lobo_rig main \
-  --squash
-```
-
-#### Updating / Pushing to the subtree remote repository
-
-If you make a change to anything in `git-subtree/lobo_rig` the commit will be stored in the **host repository** and its logs. That is the biggest change from submodules.
-
-If you now want to update the subtree remote repository with that commit, you must run the same command, **excluding** `--squash` and replacing `pull` for `push`.
-
-```bash
-git subtree push \
-  --prefix git-subtree/lobo_rig \
-  git@github.com:lukasz-lobocki/lobo_rig main
-```
-
-#### Troubleshoot
-
-```bash
-git diff-index HEAD
-```
-
-#### List
-
-```bash
-git log \
-  | grep git-subtree-dir \
-  | tr -d ' ' \
-  | cut -d ":" -f2 \
-  | sort | uniq
-```
-
-```bash
-git log \
-  | grep git-subtree-dir \
-  | awk '{ print $2 }'
-```
-
-#### Document
-
-```bash
-git remote --verbose \
-  > .gitremote \
-  && git log \
-    | grep git-subtree-dir \
-    | tr -d ' ' | cut -d ":" -f2 \
-    | sort | uniq \
-    | xargs -I {} bash -c 'if [ -d $(git rev-parse --show-toplevel)/{} ] ; then echo {}; fi' \
-  > .gitsubtree
-```
-
-### Submodules
-
-Check [this](https://gist.github.com/gitaarik/8735255#file-git_submodules-md) page.
-
-```bash
-git submodule add \
-  git@github.com:lukasz-lobocki/lobo_rig \
-  git-submodule/lobo_rig
-```
-
-To update the submodule.
-
-```bash
-git submodule update --remote
-```
-
-## requirements.txt
-
-```bash
-pipreqs --print
-```
-
-</details>
 
 ## rshell
 
