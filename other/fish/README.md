@@ -22,7 +22,7 @@ Issue following commands to update `~/.config/fish/fish_variables` with exportab
 ### Colors
 
 ```bash
-set -Ux EXA_COLORS 'da=38;5;12:gm=38;5;12:di=38;5;12;01'
+set -Ux EXA_COLORS 'da=38;5;12:gm=38;5;12:di=38;5;12;01:xx=36'
 ```
 
 ### Github
