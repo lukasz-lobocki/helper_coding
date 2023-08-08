@@ -46,7 +46,7 @@ sed 's/[[:blank:]]*$//' <file>
 1. Don't do any work in `main` branch, it belongs to the upstream project.
 2. Do any work in **dedicated** topic branches `git checkout -b <dedicated-branch>`. _This **is not** really related to `git rebase` **workflow apporach**. It's part of version control systems best practices at all._
 3. _Pull_ upstream changes into your `main` branch.
-4. Propagate to your topic branch using `git switch <dedicated-branch>` `git rebase main`.
+4. _Rebase_ (propagate) to your topic branch using `git switch <dedicated-branch>` `git rebase main`.
 5. If you need to do code changes, **do new commits** to apply small changes you need (like removing a single line with `debug printf()`). This better be done _one by one_, with rebase interactive (next step) after each such auxiliary commit, to not lose track.
 6. Do `git rebase -i main`. Your editor will pop up, carefully read instructions.
    - Use `r` action code to edit commit messages, reorder commits, and
