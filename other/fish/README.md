@@ -25,6 +25,10 @@ Issue following commands to update `~/.config/fish/fish_variables` with exportab
 set -Ux EXA_COLORS 'da=38;5;12:gm=38;5;12:di=38;5;12;01:xx=36'
 ```
 
+```bash
+set -Ux JQ_COLORS "2;37:0;39:0;39:0;39:0;39:1;39:1;39:1;33"
+```
+
 ### Github
 
 ```bash
