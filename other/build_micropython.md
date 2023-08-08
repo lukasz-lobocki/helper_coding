@@ -40,12 +40,12 @@ fish_greeting > /dev/null 2>&1 && source export.fish
 ## Clone micropython source
 
 ```bash
-git clone git@github.com:lukasz-lobocki/lobo_micropython \
+git clone --recurse-submodules git@github.com:lukasz-lobocki/lobo_micropython \
   && cd lobo_micropython
 ```
 
 ```bash
-git remote add upstream git@github.com:micropython/micropython.git
+git remote add upstream git@github.com:micropython/micropython
 ```
 
 ```bash
@@ -56,7 +56,7 @@ git checkout -b <dev-branch>
 <summary>Using original micropython repo.</summary>
 
 ```bash
-git clone git@github.com:micropython/micropython.git
+git clone --recurse-submodules git@github.com:micropython/micropython
 ```
 
 ## Update config for 4MB and 2MB SPIRAM (PSRAM)
