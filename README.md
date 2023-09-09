@@ -113,8 +113,8 @@ Make the current commit the only (initial) commit in a Git repository.
 
 ```bash
 git checkout --orphan newBranch \
-  && git add --all
-  && git commit
+  && git add --all \
+  && git commit -m "Init"
 ```
 
 ```bash
