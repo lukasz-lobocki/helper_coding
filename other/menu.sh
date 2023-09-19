@@ -104,22 +104,8 @@ run_semantic_release(){
   return $?
 }
 
-run_gital(){
-  gita shell \
-  "{ \
-    git log --pretty=format:'^%ct^%cr^' --date-order -n 1; \
-    git config --get remote.origin.url \
-      | tr -d '\n' \
-      | sed 's/^git@github.com:/ssh@https:\/\/github.com\//'; \
-    git branch -v \
-      | grep -o '\[[^]]*\]' \
-      | sed 's/^/\^/'; \
-  };" \
-  | grep --invert-match '^$' \
-  | sort --ignore-leading-blanks --field-separator='^' --key=2 --reverse \
-  | cut --delimiter='^' --fields=2 --complement \
-  | column --table --separator '^' --output-separator '  ' \
-    --table-columns 'Repo,Last commit,Github,Local is'
+run_gitas(){
+  gitas status -lus
   return $?
 }
 
@@ -142,7 +128,7 @@ main() {
 
   # Question that is always valid
   QUESTION=( \
-    "gital" " gital " \
+    "gitas" " gitas " \
   )
 
   if [[ $GITSTATUS == "0" ]]; then  # repo exists
@@ -167,9 +153,9 @@ main() {
       echo -e "\n${RED}>>> ${NC}Show git info.\n"
       show_git_info  || exit $?
       ;;
-    "gital")
-      echo -e "\n${RED}>>> ${NC}Run gital.\n"
-      run_gital || exit $?
+    "gitas")
+      echo -e "\n${RED}>>> ${NC}Run gitas.\n"
+      run_gitas || exit $?
       ;;
     "setup module")
       MODULE_NAME=$(get_module_name) || exit $?
