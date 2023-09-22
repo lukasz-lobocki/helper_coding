@@ -41,6 +41,10 @@ sed 's/[[:blank:]]*$//' <file>
 
 </details>
 
+![Basic git commands](basic-git-commands.webp)
+
+![Alt text](nm1w0gnf2zh11.webp)
+
 ## Workflow
 
 1. Don't do any work in `main` branch, it belongs to the upstream project.

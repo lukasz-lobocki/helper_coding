@@ -2,7 +2,7 @@
 
 # This script is just for testing purposes, may be deleted.
 
-set -euo pipefail
+set -uo pipefail
 IFS=$'\n\t'
 
 GREEN='\033[0;32m'
@@ -13,7 +13,7 @@ NC='\033[0m' # No Color
 REMOTES=$(git remote)
 BRANCH=$(git branch --show-current)
 
-echo -e "${YELLOW}remotes${NC}";
+echo -e "${YELLOW}remote branch${NC}";
 
 for REMOTE in $REMOTES; do
   echo -e "${REMOTE^^} ${BRANCH^^}"
@@ -21,7 +21,7 @@ done; echo
 
 for REMOTE in $REMOTES; do
   echo -e "${YELLOW}remote show ${REMOTE^^}${NC}"; git remote --verbose show $REMOTE \
-    | sed "/Remote branches:/,/Local ref configured for 'git push':/{/Remote branches:/{N;N;d};/Local ref configured for 'git push'/!d}";
+    | sed '/  Remote branch.*$/,/^  Local .*$/{/^  Local .*$/!d}';
 done; echo
 
 for REMOTE in $REMOTES; do
