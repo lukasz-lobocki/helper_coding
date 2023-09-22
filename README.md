@@ -41,13 +41,13 @@ sed 's/[[:blank:]]*$//' <file>
 
 </details>
 
-<p align="center">
+<center>
   <img src="./git-transport.webp">
-</p>
+</center>
 
-<p align="center">
+<center>
   <img src="./git-data-transport.png">
-</p>
+</center>
 
 ## Workflow
 
