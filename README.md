@@ -41,9 +41,9 @@ sed 's/[[:blank:]]*$//' <file>
 
 </details>
 
-![Git transport](git-transport.webp)
+![Alt text](git-transport.webp)
 
-![Git transport](git_data_transport_new.webp)
+![Alt text](git-data-transport.png)
 
 ## Workflow
 
