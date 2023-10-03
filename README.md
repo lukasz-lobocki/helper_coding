@@ -296,6 +296,7 @@ poetry config virtualenvs.in-project true
 ```bash
 poetry config virtualenvs.create true
 ```
+
 <details>
 <summary>New in new directory</summary>
 
